@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:5173 ws://localhost:5173"
+    />
+    <title>Activity Journal</title>
+  </head>
+  <body>
+    <div id="root">
+      <div style="padding: 32px; font-family: 'Segoe UI', sans-serif; color: #182233">
+        <h1 style="font-size: 22px">Activity Journal đang khởi động…</h1>
+        <p style="color: #66758a">
+          Nếu thông báo này không biến mất, hãy đóng ứng dụng từ system tray và mở lại.
+        </p>
+      </div>
+    </div>
+    <script type="module" src="/src/renderer/main.tsx"></script>
+  </body>
+</html>

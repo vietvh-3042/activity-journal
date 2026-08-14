@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Activity Journal Browser Bridge",
+  "version": "0.1.0",
+  "description": "Gửi tiêu đề và hostname của tab đang active tới Activity Journal trên máy này.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArPrSoOJllsrWQyK/Y/Xgu/JHEzvPkEYqlhsAfQzOyDRhUu0E3MbdUvqa+INS/nr6bk2FcMEk26QUAMX5A74Q0UMhaJ5/7EsU8FerWsGoK5/gr0Z3rupvEoNOUoc+op2kZxKEHIRCqZG5B9O0eVWB1XsS0verBRR6pgPkESmlrs0G8lCO2DVREhmoHwpHa6oNMYAp0HnFvARfDJNS7QJ+xOAL4PDtfVvfTLeRJV3BHE2vOBfSKVHB2ipM89lfyD63nVvcuNDcKv+wxVDfKMfHqFbNsgVAPSlRU/DlzSid7VRvx73kuhVEP6YAjarHHOla7rpqS4dYgRxcj58g4wZ+RQIDAQAB",
+  "permissions": ["tabs", "nativeMessaging"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_title": "Activity Journal",
+    "default_popup": "popup.html"
+  },
+  "incognito": "not_allowed"
+}

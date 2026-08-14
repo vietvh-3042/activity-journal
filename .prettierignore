@@ -1,0 +1,8 @@
+dist/
+dist-electron/
+node_modules/
+release/
+native/**/bin/
+native/**/obj/
+native/publish/
+package-lock.json
