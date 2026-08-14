@@ -1,8 +1,17 @@
 {
   "name": "activity-journal",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "description": "Local-only activity journal for Windows 10/11 x64",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vietvh-3042/activity-journal.git"
+  },
+  "homepage": "https://github.com/vietvh-3042/activity-journal#readme",
+  "bugs": {
+    "url": "https://github.com/vietvh-3042/activity-journal/issues"
+  },
   "engines": {
     "node": ">=22.12.0"
   },
@@ -17,7 +26,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run format:check && npm run typecheck && npm test",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.electron.json --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.electron.json --noEmit && tsc -p tsconfig.tests.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "build:helper": "dotnet publish native/ActivityJournal.Helper/ActivityJournal.Helper.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o native/publish/win-x64",

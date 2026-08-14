@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.electron.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node", "electron", "vitest/globals"]
+  },
+  "include": ["src/main/**/*.test.ts"],
+  "exclude": []
+}

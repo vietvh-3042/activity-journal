@@ -10,5 +10,6 @@
     "skipLibCheck": true,
     "types": ["node", "electron"]
   },
-  "include": ["src/main/**/*.ts", "src/preload/**/*", "src/shared/**/*.ts"]
+  "include": ["src/main/**/*.ts", "src/preload/**/*", "src/shared/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
 }

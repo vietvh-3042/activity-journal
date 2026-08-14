@@ -1,6 +1,11 @@
 # Activity Journal
 
+[![CI](https://github.com/vietvh-3042/activity-journal/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/vietvh-3042/activity-journal/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Ứng dụng local-only cho Windows 10 22H2/Windows 11 x64, ghi timeline ứng dụng đang dùng để có thể tìm lại hoạt động. Dự án không ghi phím, clipboard, ảnh màn hình, nội dung trang hoặc URL đầy đủ.
+
+> **Trạng thái:** MVP thử nghiệm `0.4.2`. Chưa được security audit độc lập và binary hiện chưa được code-sign.
 
 ## Trạng thái MVP
 
@@ -39,6 +44,10 @@ Nếu chỉ phát triển giao diện trên Linux/WSL, `npm run dev` vẫn mở 
 
 Extension có ID cố định `bkbaolcobjbcpjkbneipppmgmneemegf`; native host chỉ chấp nhận origin này.
 
+Chrome có thể mô tả quyền `tabs` bằng câu **Read your browsing history**. Extension không đọc danh sách lịch sử:
+service worker chỉ quan sát tab active trong cửa sổ đang focus, loại bỏ URL path/query/fragment và gửi title + hostname
+tới native host local. Extension không có content script hoặc host permission.
+
 ## Chạy bản pilot đã đóng gói
 
 1. Chép bản ZIP mới nhất trong `release/` sang Windows và giải nén toàn bộ.
@@ -51,13 +60,23 @@ Bản ZIP chạy trực tiếp không có uninstaller; xóa thư mục `win-unpa
 ## Test và đóng gói
 
 ```powershell
-npm test
+npm run check
 npm run test:helper
 npm run build
 npm run dist:win
 ```
 
 Installer NSIS là per-user và unsigned. Dữ liệu nằm tại `%LOCALAPPDATA%\Activity Journal` và được giữ lại khi uninstall; uninstaller chỉ xóa registry/native-host bridge. Xóa lịch sử bằng dashboard trước khi uninstall nếu muốn xóa DB.
+
+Maintainer có thể tạo GitHub prerelease đã kèm portable ZIP, installer và SHA-256 bằng cách push tag:
+
+```powershell
+git tag v0.4.2
+git push origin v0.4.2
+```
+
+Release workflow chạy lại quality gate và test helper trên Windows trước khi publish. Không tạo tag nếu commit chưa được
+kiểm thử trực tiếp trên máy Windows mục tiêu.
 
 ## Kiểm thử Windows bắt buộc trước khi dùng hằng ngày
 
@@ -71,3 +90,23 @@ Installer NSIS là per-user và unsigned. Dữ liệu nằm tại `%LOCALAPPDATA
 ## Ranh giới bảo mật
 
 SQLCipher bảo vệ DB khi không có khóa; DPAPI ngăn Windows user khác giải mã khóa. Giống mọi ứng dụng dùng DPAPI CurrentUser, tiến trình độc hại đang chạy dưới cùng tài khoản Windows vẫn có thể yêu cầu DPAPI giải mã. App không có network client, cloud sync, telemetry hay auto-updater trong MVP.
+
+## Giới hạn hiện tại
+
+- Chỉ hỗ trợ Windows 10 22H2/Windows 11 x64.
+- Extension phải được sideload thủ công và không hoạt động trong Incognito/InPrivate.
+- App không lưu URL đầy đủ nên không bảo đảm mở lại chính xác trang cũ.
+- Theo dõi file từ Recent Items là best-effort và có thể bỏ qua kết quả không chắc chắn.
+- Binary unsigned có thể bị SmartScreen cảnh báo; chưa có auto-update hoặc quy trình release tái lập hoàn toàn.
+
+## Đóng góp và bảo mật
+
+Đọc [CONTRIBUTING.md](CONTRIBUTING.md) trước khi gửi pull request. Không đăng database, activity log, title,
+domain, path hoặc token thật lên issue công khai. Báo cáo lỗ hổng theo [SECURITY.md](SECURITY.md) và dùng GitHub
+private vulnerability reporting.
+
+Checklist dành cho maintainer nằm tại [docs/PUBLIC_RELEASE_CHECKLIST.md](docs/PUBLIC_RELEASE_CHECKLIST.md).
+
+## License
+
+Activity Journal được phát hành theo [MIT License](LICENSE).

@@ -1,0 +1,53 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '03:00'
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      npm-development-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+
+  - package-ecosystem: nuget
+    directory: /native/ActivityJournal.Helper
+    schedule:
+      interval: weekly
+      day: monday
+      time: '03:15'
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: nuget
+    directory: /native/ActivityJournal.Helper.Tests
+    schedule:
+      interval: weekly
+      day: monday
+      time: '03:30'
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '03:45'
+      timezone: Asia/Bangkok
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope

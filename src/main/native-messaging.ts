@@ -3,6 +3,7 @@ import { execFile } from 'node:child_process';
 import { access, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
+import { windowsSystemExecutable } from './windows-paths.js';
 
 const execFileAsync = promisify(execFile);
 export const EXTENSION_ID = 'bkbaolcobjbcpjkbneipppmgmneemegf';
@@ -47,8 +48,10 @@ export async function registerNativeMessagingHost(): Promise<BrowserIntegrationR
     `HKCU\\Software\\Google\\Chrome\\NativeMessagingHosts\\${NATIVE_HOST_NAME}`,
     `HKCU\\Software\\Microsoft\\Edge\\NativeMessagingHosts\\${NATIVE_HOST_NAME}`,
   ];
+  const regExecutable = windowsSystemExecutable(process.env, 'reg.exe');
+  await access(regExecutable);
   for (const key of registryKeys) {
-    await execFileAsync('reg.exe', ['ADD', key, '/ve', '/t', 'REG_SZ', '/d', manifestPath, '/f'], {
+    await execFileAsync(regExecutable, ['ADD', key, '/ve', '/t', 'REG_SZ', '/d', manifestPath, '/f'], {
       windowsHide: true,
     });
   }

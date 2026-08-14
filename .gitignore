@@ -5,5 +5,31 @@ release/
 native/publish/
 native/**/bin/
 native/**/obj/
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.pem
+*.key
+
+# Local application data
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Test and coverage output
+coverage/
+test-results/
+playwright-report/
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
 *.user
 *.log

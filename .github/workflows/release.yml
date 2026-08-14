@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: windows-release
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      HUSKY: 0
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.18.0
+          cache: npm
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify source
+        run: |
+          npm run check
+          npm run test:helper
+
+      - name: Build unsigned Windows package
+        run: npm run dist:win
+
+      - name: Create portable ZIP and checksums
+        shell: pwsh
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          $zipPath = "release/Activity-Journal-$tag-win-x64-unpacked.zip"
+          Compress-Archive -Path "release/win-unpacked/*" -DestinationPath $zipPath -CompressionLevel Optimal
+          $releaseFiles = @(Get-ChildItem release -File | Where-Object { $_.Extension -in ".exe", ".zip" })
+          $checksums = $releaseFiles | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $($_.Name)"
+          }
+          $checksums | Set-Content "release/SHA256SUMS.txt" -Encoding utf8
+
+      - name: Publish GitHub prerelease
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $assets = @(Get-ChildItem release -File | Where-Object { $_.Extension -in ".exe", ".zip", ".txt" } | ForEach-Object { $_.FullName })
+          gh release create $env:GITHUB_REF_NAME $assets --verify-tag --generate-notes --prerelease --title "Activity Journal $env:GITHUB_REF_NAME"
